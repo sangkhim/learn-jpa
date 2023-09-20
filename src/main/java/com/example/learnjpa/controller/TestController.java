@@ -5,6 +5,7 @@ import com.example.learnjpa.entity.Order;
 import com.example.learnjpa.entity.Student;
 import com.example.learnjpa.entity.User;
 import com.example.learnjpa.entity.base.Auditor;
+import com.example.learnjpa.repository.OrderRepository;
 import com.example.learnjpa.repository.StudentRepository;
 import com.example.learnjpa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +15,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
 public class TestController {
 
   private final UserRepository userRepository;
+  private final OrderRepository orderRepository;
   private final StudentRepository studentRepository;
 
   @GetMapping("/test")
@@ -35,19 +34,15 @@ public class TestController {
 
     User user = new User();
     user.setName("sangkhim");
-
     Address address = new Address();
     address.setId(1L);
     user.setAddress(address);
-
-    List<Order> orders = new ArrayList<>();
-    Order order = new Order();
-    order.setId(1L);
-    order.setUser(user);
-    orders.set(1, order);
-    user.setOrders(orders);
-
     userRepository.save(user);
+
+    Order order = new Order();
+    order.setUser(user);
+    order.setTotal(100.0);
+    orderRepository.save(order);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
