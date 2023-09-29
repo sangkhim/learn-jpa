@@ -17,3 +17,14 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        generate_statistics: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      hibernate:
+        stat: DEBUG
+        SQL: DEBUG
