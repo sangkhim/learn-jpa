@@ -1,13 +1,12 @@
 package com.example.learnjpa.controller;
 
 import com.example.learnjpa.entity.Address;
-import com.example.learnjpa.entity.Order;
+import com.example.learnjpa.entity.Course;
 import com.example.learnjpa.entity.Student;
-import com.example.learnjpa.entity.User;
 import com.example.learnjpa.entity.base.Auditor;
-import com.example.learnjpa.repository.OrderRepository;
 import com.example.learnjpa.repository.StudentRepository;
-import com.example.learnjpa.repository.UserRepository;
+import java.util.Arrays;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,29 +19,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-  private final UserRepository userRepository;
-  private final OrderRepository orderRepository;
   private final StudentRepository studentRepository;
 
   @GetMapping("/test")
   public ResponseEntity<Void> test() {
     Student student = new Student();
+    student.setName("admin");
+
     Auditor auditor = new Auditor();
-    auditor.setCreatedBy("sangkhim");
+    auditor.setCreatedDate(new Date());
+    auditor.setCreatedBy("operator");
     student.setAuditor(auditor);
-    studentRepository.save(student);
 
-    User user = new User();
-    user.setName("sangkhim");
     Address address = new Address();
-    address.setId(1L);
-    user.setAddress(address);
-    userRepository.save(user);
+    address.setAddress("#95, st. 608");
+    student.setAddress(address);
 
-    Order order = new Order();
-    order.setUser(user);
-    order.setTotal(100.0);
-    orderRepository.save(order);
+    Course course1 = new Course();
+    course1.setName("Physic");
+    Course course2 = new Course();
+    course2.setName("Math");
+
+    student.setCourses(Arrays.asList(course1, course2));
+
+    studentRepository.save(student);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }

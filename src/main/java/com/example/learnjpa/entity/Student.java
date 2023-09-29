@@ -2,15 +2,19 @@ package com.example.learnjpa.entity;
 
 import com.example.learnjpa.entity.base.Auditor;
 import com.example.learnjpa.entity.enums.Sex;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.Data;
@@ -32,6 +36,13 @@ public class Student {
   @Column(name = "sex")
   @Enumerated(EnumType.STRING)
   private Sex sex;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(
+      name = "address_id",
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "FK_STUDENT_ADDRESS"))
+  private Address address;
 
   @Embedded private Auditor auditor;
 }

@@ -22,5 +22,5 @@ public class Address {
   private String address;
 
   @OneToOne(mappedBy = "address")
-  private User user;
+  private Student student;
 }
