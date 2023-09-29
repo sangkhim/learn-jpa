@@ -16,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -30,9 +32,6 @@ public class Student {
   @Column(name = "name")
   private String name;
 
-  @ManyToMany(mappedBy = "students")
-  private List<Course> courses;
-
   @Column(name = "sex")
   @Enumerated(EnumType.STRING)
   private Sex sex;
@@ -43,6 +42,9 @@ public class Student {
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "FK_STUDENT_ADDRESS"))
   private Address address;
+
+  @ManyToMany(mappedBy = "students")
+  private List<Course> courses = new ArrayList<>();
 
   @Embedded private Auditor auditor;
 }
