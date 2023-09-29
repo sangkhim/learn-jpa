@@ -5,6 +5,7 @@ import com.example.learnjpa.entity.Course;
 import com.example.learnjpa.entity.Student;
 import com.example.learnjpa.entity.base.Auditor;
 import com.example.learnjpa.entity.enums.Sex;
+import com.example.learnjpa.repository.CourseRepository;
 import com.example.learnjpa.repository.StudentRepository;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,14 +25,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
   private final StudentRepository studentRepository;
+  private final CourseRepository courseRepository;
 
-  @GetMapping("/get")
-  public ResponseEntity<List<Student>> get() {
+  @GetMapping("/student/get")
+  public ResponseEntity<List<Student>> getStudents() {
     List<Student> students = studentRepository.findAll();
     return new ResponseEntity<>(students, HttpStatus.OK);
   }
 
-  @PostMapping("/save")
+  @GetMapping("/course/get")
+  public ResponseEntity<List<Course>> getCourses() {
+    List<Course> courses = courseRepository.findAll();
+    return new ResponseEntity<>(courses, HttpStatus.OK);
+  }
+
+  @PostMapping("/student/save")
   public ResponseEntity<Void> save() {
     Student student = new Student();
     student.setName("admin");
@@ -58,7 +66,7 @@ public class TestController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @PostMapping("/update/{studentId}")
+  @PostMapping("/student/update/{studentId}")
   public ResponseEntity<Void> update(@PathVariable("studentId") Long studentId) {
     Student student = studentRepository.findById(studentId).get();
     student.setName("admin update");
@@ -73,9 +81,12 @@ public class TestController {
     address.setAddress("#95, st. 608 update");
     student.setAddress(address);
 
-    student.getCourses().forEach(course -> {
-      course.setName(course.getName() + " update");
-    });
+    student
+        .getCourses()
+        .forEach(
+            course -> {
+              course.setName(course.getName() + " update");
+            });
 
     studentRepository.save(student);
 
