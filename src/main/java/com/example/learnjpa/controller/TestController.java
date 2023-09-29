@@ -7,11 +7,13 @@ import com.example.learnjpa.entity.base.Auditor;
 import com.example.learnjpa.repository.StudentRepository;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,8 +23,14 @@ public class TestController {
 
   private final StudentRepository studentRepository;
 
-  @GetMapping("/test")
-  public ResponseEntity<Void> test() {
+  @GetMapping("/get")
+  public ResponseEntity<List<Student>> get() {
+    List<Student> students = studentRepository.findAll();
+    return new ResponseEntity<>(students, HttpStatus.OK);
+  }
+
+  @PostMapping("/save")
+  public ResponseEntity<Void> save() {
     Student student = new Student();
     student.setName("admin");
 

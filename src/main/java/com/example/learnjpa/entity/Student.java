@@ -2,6 +2,7 @@ package com.example.learnjpa.entity;
 
 import com.example.learnjpa.entity.base.Auditor;
 import com.example.learnjpa.entity.enums.Sex;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -42,6 +43,7 @@ public class Student {
       name = "address_id",
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "FK_STUDENT_ADDRESS"))
+  @JsonIgnoreProperties("student")
   private Address address;
 
   @ManyToMany(cascade = CascadeType.ALL)
@@ -49,6 +51,7 @@ public class Student {
     name = "student_course",
     joinColumns = @JoinColumn(name = "student_id"),
     inverseJoinColumns = @JoinColumn(name = "course_id"))
+  @JsonIgnoreProperties("students")
   private List<Course> courses;
 
   @Embedded private Auditor auditor;
