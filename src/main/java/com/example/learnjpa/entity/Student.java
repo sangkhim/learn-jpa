@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -43,8 +44,12 @@ public class Student {
       foreignKey = @ForeignKey(name = "FK_STUDENT_ADDRESS"))
   private Address address;
 
-  @ManyToMany(mappedBy = "students")
-  private List<Course> courses = new ArrayList<>();
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+    name = "student_course",
+    joinColumns = @JoinColumn(name = "student_id"),
+    inverseJoinColumns = @JoinColumn(name = "course_id"))
+  private List<Course> courses;
 
   @Embedded private Auditor auditor;
 }
